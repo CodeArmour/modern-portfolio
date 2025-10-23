@@ -14,10 +14,13 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Omar Codes",
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
-  },
+  icon: [
+    { url: "/logo.png", sizes: "any" },
+    { url: "/logo.png", sizes: "192x192", type: "image/png" },
+  ],
+  shortcut: "/logo.png",
+  apple: "/logo.png",
+},
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
     description:
@@ -50,6 +53,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="shortcut icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
       <body className={cn("min-h-screen font-sans antialiased", fonts)}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <ActionSectionProvider>{children}</ActionSectionProvider>
