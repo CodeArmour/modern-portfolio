@@ -14,9 +14,12 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Omar Codes",
   icons: {
-    icon: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
-    shortcut: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
-    apple: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
   },
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
