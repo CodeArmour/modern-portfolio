@@ -13,13 +13,6 @@ export const metadata: Metadata = {
     "Hello, I'm Omar. I am a full stack developer from Belgium. I enjoy building sites and apps. My focus is React (Next.js).",
   generator: "Next.js",
   applicationName: "Omar Codes",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/icon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
   },
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
