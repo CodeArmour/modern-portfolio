@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { fonts } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
-import { siteConfig } from "@/lib/site-config";
 import { ThemeProvider } from "next-themes";
 import { ActionSectionProvider } from "@/components/context/active-section-provider";
-import { Toaster } from "@/components/ui/sonner"
-
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://modern-portfolio-red-alpha.vercel.app"),
@@ -16,9 +14,9 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Omar Codes",
   icons: {
-    icon: "https://modern-portfolio-red-alpha.vercel.app/logo.png",
-    shortcut: "https://modern-portfolio-red-alpha.vercel.app/logo.png",
-    apple: "https://modern-portfolio-red-alpha.vercel.app/logo.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
@@ -40,10 +38,10 @@ export const metadata: Metadata = {
   },
   other: {
     "fb:app_id": "", // Optional: add your Facebook App ID if available
-    "og:image:secure_url": "https://modern-portfolio-red-alpha.vercel.app/logo.png",
+    "og:image:secure_url":
+      "https://modern-portfolio-red-alpha.vercel.app/logo.png",
   },
 };
-
 
 export default function RootLayout({
   children,
