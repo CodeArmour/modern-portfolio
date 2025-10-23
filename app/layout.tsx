@@ -16,8 +16,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/logo.png",
-        sizes: "722x345",
+        url: "/logo-icon.png",
         type: "image/png",
       },
     ],
@@ -31,7 +30,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://modern-portfolio-red-alpha.vercel.app/logo.png",
+        url: "https://modern-portfolio-red-alpha.vercel.app/logo-icon.png",
         width: 1200,
         height: 630,
         alt: "Omar Codes | Full Stack Developer",
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
   other: {
     "fb:app_id": "",
     "og:image:secure_url":
-      "https://modern-portfolio-red-alpha.vercel.app/logo.png",
+      "https://modern-portfolio-red-alpha.vercel.app/logo-icon.png",
   },
 };
 
