@@ -36,6 +36,7 @@ export default function ProjectsSection() {
   const { ref } = useSectionInView('Projects', 0.3)
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
+  const [activeProject, setActiveProject] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -50,6 +51,10 @@ export default function ProjectsSection() {
     }
     fetchProjects()
   }, [])
+
+  const handleProjectClick = (projectId: string) => {
+    setActiveProject(activeProject === projectId ? null : projectId)
+  }
 
   if (loading) {
     return (
@@ -99,6 +104,7 @@ export default function ProjectsSection() {
             viewport={{ once: true }}
             custom={index}
             className="relative flex flex-col rounded border overflow-hidden cursor-pointer group"
+            onClick={() => handleProjectClick(project._id)}
           >
             {/* Project image */}
             <div className="relative h-40 w-full overflow-hidden">
@@ -110,12 +116,15 @@ export default function ProjectsSection() {
               />
             </div>
 
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-all duration-300 flex items-center justify-center gap-4 group-hover:opacity-100">
+            {/* Hover/Active overlay - shows on hover for desktop, on click for mobile */}
+            <div className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300 flex items-center justify-center gap-4 ${
+              activeProject === project._id ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'
+            }`}>
               {project.projectUrl && (
                 <Link
                   href={project.projectUrl}
                   target="_blank"
+                  onClick={(e) => e.stopPropagation()}
                   className="px-4 py-2 bg-white text-black rounded-md font-medium transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95"
                 >
                   View
@@ -125,6 +134,7 @@ export default function ProjectsSection() {
                 <Link
                   href={project.githubUrl}
                   target="_blank"
+                  onClick={(e) => e.stopPropagation()}
                   className="px-4 py-2 bg-white text-black rounded-md font-medium transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95"
                 >
                   GitHub
