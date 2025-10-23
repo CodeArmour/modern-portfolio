@@ -12,7 +12,10 @@ import {
   Moon,
   Star,
   Sun,
-  Loader
+  Loader,
+  Eye,
+  EyeOff,
+  EyeClosed
 } from "lucide-react";
 import { loadComponents } from "next/dist/server/load-components";
 
@@ -29,6 +32,9 @@ export const Icons = {
   calendar: Calendar,
   building: Building2,
   loadComponents: Loader,
+  eye: Eye,
+  eyeoff: EyeOff,
+  eyeclosed: EyeClosed,
   audiophile: (props: LucideProps) => (
     <svg
       width="64"

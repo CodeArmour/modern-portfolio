@@ -1,26 +1,27 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useSectionInView } from '@/hooks/use-section-in-view'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import Image from 'next/image'
-import SectionHeading from './section-heading'
-import { Badge } from './ui/badge'
-import apiClient from '@/lib/apiClient'
+import { useEffect, useState } from "react";
+import { useSectionInView } from "@/hooks/use-section-in-view";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import SectionHeading from "./section-heading";
+import { Badge } from "./ui/badge";
+import apiClient from "@/lib/apiClient";
+import { Icons } from "./icons";
 
 interface Project {
-  _id: string
-  title: string
-  description: string
-  shortDescription: string
-  image: string
-  projectUrl: string
-  githubUrl: string
-  technologies: string[]
-  category: string
-  isFeatured: boolean
-  order: number
+  _id: string;
+  title: string;
+  description: string;
+  shortDescription: string;
+  image: string;
+  projectUrl: string;
+  githubUrl: string;
+  technologies: string[];
+  category: string;
+  isFeatured: boolean;
+  order: number;
 }
 
 const fadeInAnimationVariants = {
@@ -30,31 +31,31 @@ const fadeInAnimationVariants = {
     y: 0,
     transition: { delay: 0.1 * index },
   }),
-}
+};
 
 export default function ProjectsSection() {
-  const { ref } = useSectionInView('Projects', 0.3)
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-  const [activeProject, setActiveProject] = useState<string | null>(null)
+  const { ref } = useSectionInView("Projects", 0.3);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeProject, setActiveProject] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await apiClient.get('/portfolio/project/public')
-        setProjects(res.data.projects)
+        const res = await apiClient.get("/portfolio/project/public");
+        setProjects(res.data.projects);
       } catch (error) {
-        console.error('Failed to fetch projects:', error)
+        console.error("Failed to fetch projects:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    fetchProjects()
-  }, [])
+    };
+    fetchProjects();
+  }, []);
 
   const handleProjectClick = (projectId: string) => {
-    setActiveProject(activeProject === projectId ? null : projectId)
-  }
+    setActiveProject(activeProject === projectId ? null : projectId);
+  };
 
   if (loading) {
     return (
@@ -65,7 +66,7 @@ export default function ProjectsSection() {
       >
         Loading projects...
       </section>
-    )
+    );
   }
 
   if (!projects.length) {
@@ -77,7 +78,7 @@ export default function ProjectsSection() {
       >
         No project data available.
       </section>
-    )
+    );
   }
 
   return (
@@ -117,17 +118,22 @@ export default function ProjectsSection() {
             </div>
 
             {/* Hover/Active overlay - shows on hover for desktop, on click for mobile */}
-            <div className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300 flex items-center justify-center gap-4 ${
-              activeProject === project._id ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100'
-            }`}>
+            <div
+              className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-all duration-300 flex items-center justify-center gap-4 ${
+                activeProject === project._id
+                  ? "opacity-100"
+                  : "opacity-0 md:group-hover:opacity-100"
+              }`}
+            >
               {project.projectUrl && (
                 <Link
                   href={project.projectUrl}
                   target="_blank"
                   onClick={(e) => e.stopPropagation()}
-                  className="px-4 py-2 bg-white text-black rounded-md font-medium transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95"
+                  className="w-12 h-12 bg-white text-black rounded-full font-medium transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-110 active:scale-95 flex items-center justify-center group/eye"
                 >
-                  View
+                  <Icons.eyeclosed className="size-5 group-hover/eye:hidden" />
+                  <Icons.eye className="size-5 hidden group-hover/eye:block" />
                 </Link>
               )}
               {project.githubUrl && (
@@ -135,9 +141,9 @@ export default function ProjectsSection() {
                   href={project.githubUrl}
                   target="_blank"
                   onClick={(e) => e.stopPropagation()}
-                  className="px-4 py-2 bg-white text-black rounded-md font-medium transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-105 active:scale-95"
+                  className="w-12 h-12 bg-white text-black rounded-full font-medium transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-110 active:scale-95 flex items-center justify-center"
                 >
-                  GitHub
+                  <Icons.github className="size-5" />
                 </Link>
               )}
             </div>
@@ -160,5 +166,5 @@ export default function ProjectsSection() {
         ))}
       </div>
     </section>
-  )
+  );
 }
