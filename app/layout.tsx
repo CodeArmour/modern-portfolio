@@ -14,13 +14,8 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Omar Codes",
   icons: {
-  icon: [
-    { url: "/logo.png", sizes: "any" },
-    { url: "/logo.png", sizes: "192x192", type: "image/png" },
-  ],
-  shortcut: "/logo.png",
-  apple: "/logo.png",
-},
+    icon: { url: "/logo.png", type: "image/png" },
+  },
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
     description:
@@ -40,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   other: {
-    "fb:app_id": "", // Optional: add your Facebook App ID if available
+    "fb:app_id": "",
     "og:image:secure_url":
       "https://modern-portfolio-red-alpha.vercel.app/logo.png",
   },
@@ -53,11 +48,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/logo.png" type="image/png" />
-        <link rel="shortcut icon" href="/logo.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/logo.png" />
-      </head>
       <body className={cn("min-h-screen font-sans antialiased", fonts)}>
         <ThemeProvider attribute="class" defaultTheme="dark">
           <ActionSectionProvider>{children}</ActionSectionProvider>
