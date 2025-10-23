@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+out/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Next.js cache (especially with Tailwind JIT)
+.next/cache/
+
+# Tailwind CSS build artifacts (if any custom build scripts)
+*.css.map
+
+# Optional: if using Turbo (Next.js 13+ with app router)
+.turbo/
+
+# Optional: if using Vercel CLI / local deployments
+.vercel/
+
+# Optional: coverage reports (e.g., Jest)
+coverage/
+
+# Optional: misc temporary files
+*.log
+*.pid
