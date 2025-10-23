@@ -6,60 +6,105 @@ import { Button } from "./ui/button";
 import { siteConfig } from "@/lib/site-config";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { contactFormSchema, ContactFormSchema } from "@/lib/schema";
+import { z } from "zod";
 import { toast } from "sonner";
-import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { cn } from "@/lib/utils";
-import { ErrorLine } from "./ui/error-line";
 import { Textarea } from "./ui/textarea";
 import { Icons } from "./icons";
 import { useSectionInView } from "@/hooks/use-section-in-view";
+import apiClient from "@/lib/apiClient";
+import {
+  Form as UIForm,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+
+const contactFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email address"),
+  message: z
+    .string()
+    .min(1, "Message is required")
+    .min(10, "Message must be between 10 and 5000 characters")
+    .max(5000, "Message must be between 10 and 5000 characters"),
+});
+
+type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+// Custom validation resolver
+const customResolver = async (values: unknown) => {
+  try {
+    const validatedData = contactFormSchema.parse(values);
+    return { values: validatedData, errors: {} };
+  } catch (error: unknown) {
+    const errors: Record<string, { type: string; message: string }> = {};
+    if (error instanceof z.ZodError) {
+      error.issues.forEach((issue) => {
+        const path = issue.path[0];
+        if (typeof path === "string") {
+          errors[path] = {
+            type: "manual",
+            message: issue.message,
+          };
+        }
+      });
+    }
+    return { values: {}, errors };
+  }
+};
 
 export default function ContactSection() {
   const { ref } = useSectionInView("Contact");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<ContactFormSchema>({ 
-    resolver: zodResolver(contactFormSchema),
-  })
+  const form = useForm<ContactFormValues>({
+    resolver: customResolver,
+    mode: "onBlur",
+    reValidateMode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+    shouldFocusError: false,
+  });
 
-  const onSubmit = async (values: ContactFormSchema) => {
+  const onSubmit = async (values: ContactFormValues) => {
     try {
-      // محاكاة إرسال البيانات
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      console.log('Form values:', values)
-      toast.success('Message sent successfully!')
-      reset()
-    } catch (error) {
-      console.error('Error:', error)
-      toast.error('Failed to send message. Please try again.')
+      await apiClient.post("/portfolio/message/create", {
+        name: values.name.trim(),
+        email: values.email.trim(),
+        message: values.message.trim(),
+      });
+
+      toast.success("Message sent successfully!");
+      form.reset();
+    } catch (error: unknown) {
+      console.error("Error sending message:", error);
+      const errorMessage =
+        error instanceof Error && "response" in error
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ? (error as any).response?.data?.message ||
+            "Failed to send message. Please try again."
+          : "Failed to send message. Please try again.";
+      toast.error(errorMessage);
     }
-  }
+  };
 
   return (
     <motion.section
       ref={ref}
       id="contact"
       className="my-10 w-full scroll-mt-28 md:mb-20"
-      initial={{
-        opacity: 0,
-      }}
-      whileInView={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 1,
-      }}
-      viewport={{
-        once: true,
-      }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      viewport={{ once: true }}
     >
       <SectionHeading
         heading="Get In Touch"
@@ -79,58 +124,93 @@ export default function ContactSection() {
           </>
         }
       />
-      
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-5"
-      >
-        <div className="w-full max-w-xl">
-          <Label
-            htmlFor="email"
-            className={cn("mb-2", errors.email?.message && 'text-destructive')}
-          >
-            Email
-          </Label>
-          <Input
-            type="email"
-            id="email"
-            placeholder="hello@gmail.com"
-            {...register('email')}
-            className={cn(errors.email?.message && 'border-destructive')}
-            disabled={isSubmitting}
+
+      <UIForm {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col items-center gap-5"
+        >
+          {/* Name Field */}
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem className="w-full max-w-xl">
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="John Doe"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                    className="rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <ErrorLine message={errors.email?.message} />
-        </div>
-        
-        <div className="w-full max-w-xl">
-          <Label
-            htmlFor="message"
-            className={cn("mb-2", errors.message?.message && 'text-destructive')}
-          >
-            Message
-          </Label>
-          <Textarea
-            id="message"
-            placeholder="Hello! What's up?"
-            {...register('message')}
-            className={cn(errors.message?.message && 'border-destructive')}
-            disabled={isSubmitting}
+
+          {/* Email Field */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="w-full max-w-xl">
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="hello@gmail.com"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                    className="rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <ErrorLine message={errors.message?.message} />
-        </div>
-        
-        <Button type="submit" size="lg" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <>
-              Sending... <Icons.loadComponents className="ml-2 size-4 animate-spin" />
-            </>
-          ) : (
-            <>
-              Submit <Icons.arrowRight className="ml-2 size-4" />
-            </>
-          )}
-        </Button>
-      </form>
+
+          {/* Message Field */}
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem className="w-full max-w-xl">
+                <FormLabel>Message</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Hello! What's up?"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                    className="rounded-lg"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            size="lg"
+            disabled={form.formState.isSubmitting}
+            className="rounded-lg"
+          >
+            {form.formState.isSubmitting ? (
+              <>
+                Sending...{" "}
+                <Icons.loadComponents className="ml-2 size-4 animate-spin" />
+              </>
+            ) : (
+              <>
+                Submit <Icons.arrowRight className="ml-2 size-4" />
+              </>
+            )}
+          </Button>
+        </form>
+      </UIForm>
     </motion.section>
   );
 }

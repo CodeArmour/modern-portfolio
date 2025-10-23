@@ -6,9 +6,70 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import SectionHeading from './section-heading'
 import Skills from './skills'
+import { useEffect, useState } from 'react'
+import apiClient from '@/lib/apiClient'
+import { profile } from 'console'
+
+interface AboutMe {
+  description: string
+}
 
 export default function AboutSection() {
   const { ref } = useSectionInView('About')
+  const [aboutMe, setAboutMe] = useState<AboutMe | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const res = await apiClient.get(
+        `/portfolio/profile/68f3e5970f743004e2c6f2b1`
+      )
+      setAboutMe(res.data.profile)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response) {
+        console.error('❌ API responded with error:', error.response.status, error.response.data)
+      } else if (error.request) {
+        console.error('❌ No response received from API:', error.request)
+      } else {
+        console.error('❌ Error setting up request:', error.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  fetchProfile()
+}, [])
+
+
+  if (loading) {
+    return (
+      <section
+        ref={ref}
+        id="home"
+        className="flex h-[60vh] items-center justify-center text-gray-500"
+      >
+        Loading profile...
+      </section>
+    )
+  }
+
+  if (!aboutMe) {
+    return (
+      <section
+        ref={ref}
+        id="home"
+        className="flex h-[60vh] items-center justify-center text-red-500"
+      >
+        Failed to load profile data.
+      </section>
+    )
+  }
+
+  // Split aboutMe by comma — example: "developer crafting..., You have..."
+  const [intro, callToAction] = aboutMe.description.split('...')
 
   return (
     <motion.section
@@ -22,14 +83,10 @@ export default function AboutSection() {
       <SectionHeading heading="About Me" />
       <div className="-mt-5 max-w-2xl text-center leading-7">
         <p className="mb-4">
-          I’ve been working with programming for over 3 years. My favorite part
-          of coding is solving problems — I love the feeling of finally figuring
-          out a tricky challenge.
+          {intro}
         </p>
         <p>
-          I'm open to Job opportunities where I can contribute, learn and grow.
-          If you have a good opportunity that matches my skills and experience
-          then don't hesitate to{' '}
+          {callToAction}{' '}
           <Link
             className="underline-offset-4 hover:underline"
             href={siteConfig.links.contactForm}
