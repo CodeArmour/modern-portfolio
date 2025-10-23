@@ -10,19 +10,19 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://modern-portfolio-red-alpha.vercel.app"),
   title: "Omar Codes | Full Stack Developer",
   description:
-    "Hello, I'm Omar. I am a full stack developer from Belgium. I enjoy building sites and apps. My focus is React (Next.js).",
+    "Hello, I'm Omar. I am a full stack developer In Belgium. I enjoy building sites and apps. My focus is React (Next.js).",
   generator: "Next.js",
   applicationName: "Omar Codes",
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
     description:
-      "Hello, I'm Omar. I am a full stack developer from Belgium. I enjoy building sites and apps. My focus is React (Next.js).",
+      "Hello, I'm Omar. I am a full stack developer In Belgium. I enjoy building sites and apps. My focus is React (Next.js).",
     url: "https://modern-portfolio-red-alpha.vercel.app/",
     siteName: "Omar Codes",
     locale: "en_US",
     images: [
       {
-        url: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
+        url: "/opengraph-image.png", // Changed from logoicon.png
         width: 1200,
         height: 630,
         alt: "Omar Codes | Full Stack Developer",
@@ -31,10 +31,12 @@ export const metadata: Metadata = {
     ],
     type: "website",
   },
-  other: {
-    "fb:app_id": "",
-    "og:image:secure_url":
-      "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
+  twitter: {
+    card: "summary_large_image",
+    title: "Omar Codes | Full Stack Developer",
+    description:
+      "Hello, I'm Omar. I am a full stack developer In Belgium. I enjoy building sites and apps. My focus is React (Next.js).",
+    images: ["/opengraph-image.png"],
   },
 };
 
