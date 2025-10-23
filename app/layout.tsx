@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Omar Codes",
   icons: {
-    icon: "/herophoto.png",
-    shortcut: "/herophoto.png",
-    apple: "/herophoto.png",
+    icon: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
+    shortcut: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
+    apple: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
   },
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "https://modern-portfolio-red-alpha.vercel.app/logo-icon.png",
+        url: "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
         width: 1200,
         height: 630,
         alt: "Omar Codes | Full Stack Developer",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   other: {
     "fb:app_id": "",
     "og:image:secure_url":
-      "https://modern-portfolio-red-alpha.vercel.app/logo-icon.png",
+      "https://modern-portfolio-red-alpha.vercel.app/logoicon.png",
   },
 };
 
