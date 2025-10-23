@@ -14,12 +14,9 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Omar Codes",
   icons: {
-    icon: [
-      {
-        url: "/logo-icon.png",
-        type: "image/png",
-      },
-    ],
+    icon: "/herophoto.png",
+    shortcut: "/herophoto.png",
+    apple: "/herophoto.png",
   },
   openGraph: {
     title: "Omar Codes | Full Stack Developer",
