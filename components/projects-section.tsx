@@ -125,7 +125,7 @@ export default function ProjectsSection() {
                   : "opacity-0 md:group-hover:opacity-100"
               }`}
             >
-              {project.projectUrl && (
+              {project.projectUrl && project.category != "API/Backend" && (
                 <Link
                   href={project.projectUrl}
                   target="_blank"
